@@ -1,835 +1,312 @@
-"Use Vim settings, rather then Vi settings (much better!).
-"This must be first, because it changes other options as a side effect.
-set nocompatible
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Maintainer: LazyWei
-"             jrweizhang AT gmail DOT com
-
-" Sections:
-"    -> Set Vundle (plugins manager)
-"    -> General
-"    -> VIM user interface
-"    -> Colors and Fonts
-"    -> Files and backups
-"    -> Text, tab and indent related
-"    -> Visual mode related
-"    -> Command mode related
-"    -> Moving around, tabs and buffers
-"    -> Statusline
-"    -> Parenthesis/bracket expanding
-"    -> General Abbrevs
-"    -> Editing mappings
-"
-"    -> Plugins settings
+""""""""""""""""""""""""""""""""""""""
+" 编辑器设置
+""""""""""""""""""""""""""""""""""""""
+"vundle  -- vim package manager
 "
 "
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Reset vimrc augroup
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" We reset the vimrc augroup. Autocommands are added to this group throughout
-" the file
-augroup vimrc
-  autocmd!
-augroup END
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Set Vundle (plugins manager)
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" set for Vundle
+"
+set nocompatible               " be iMproved
 filetype off                   " required!
+
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
+" let Vundle manage Vundle
+" required! 
 Bundle 'gmarik/vundle'
-
-" My Bundles here:
 "
-" original repos on github
-Bundle 'godlygeek/tabular'
-Bundle 'Lokaltog/vim-powerline'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'nathanaelkane/vim-indent-guides'
-Bundle 'scrooloose/nerdtree.git'
-Bundle 'sjl/gundo.vim.git'
-Bundle 'tpope/vim-surround.git'
-Bundle 'tpope/vim-fugitive.git'
-Bundle 'tpope/vim-rails.git'
-Bundle 'vim-scripts/YankRing.vim.git'
-Bundle 'vim-ruby/vim-ruby'
-Bundle 'vim-scripts/simplefold'
-Bundle 'Valloric/MatchTagAlways'
-Bundle 'Valloric/vim-valloric-colorscheme'
-" YCM need extra binaries, see doc.
-Bundle 'Valloric/YouCompleteMe' 
-" ---
-Bundle 'vim-scripts/ruby-matchit'
-Bundle 'xuhdev/SingleCompile'
-Bundle 'xolox/vim-notes'
-" my plugin
-Bundle 'lazywei/vim-language-specific'
-Bundle 'lazywei/vim-doc-tw'
-Bundle 'lazywei/ultisnips'
-" Need for vgod's color when use vim in terminal
-Bundle 'color'
-" less use
-Bundle 'EasyGrep.git'
-Bundle 'majutsushi/tagbar.git'
-Bundle 'bufexplorer.zip'
-" Bundle 'scrooloose/syntastic'
-" Bundle 'php.vim-for-php5'
-" Bundle 'vim-latex-1.8.23'
-" Bundle 'Shougo/neocomplcache'
-" Bundle 'ervandew/supertab.git'
-" For snipmate
-" Bundle 'MarcWeber/vim-addon-mw-utils'
-" Bundle 'tomtom/tlib_vim'
-" Bundle 'honza/snipmate-snippets'
-" Bundle 'lazywei/vim-snipmate'
+"    " My Bundles here:
+"     "
+"      " original repos on github
+"Bundle 'tpope/vim-fugitive'
+"Bundle 'Lokaltog/vim-easymotion'
+"Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+"Bundle 'tpope/vim-rails.git'
+" vim-scripts repos
+"Bundle 'L9'
+"Bundle 'FuzzyFinder'
+" non github repos
+"Bundle 'git://git.wincent.com/command-t.git'
+" ...
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => General
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+filetype plugin indent on     " required!
+"
+" Brief help
+" :BundleList          - list configured bundles
+" :BundleInstall(!)    - install(update) bundles
+" :BundleSearch(!) foo - search(or refresh cache first) for foo
+" :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
+"
+" see :h vundle for more details or wiki for FAQ
+" NOTE: comments after Bundle command are not allowed..
 
-" With a map leader it's possible to do extra key combinations
-" like <leader>ww saves the current file
-let mapleader = ","
-let g:mapleader = ","
+"开启语法高亮
+syntax enable
+syntax on
 
-" In normal mode, we use : much more often than ; so lets swap them.
-" WARNING: this will cause any "ordinary" map command without the "nore" prefix
-" that uses ":" to fail. For instance, "map <f2> :w" would fail, since vim will
-" read ":w" as ";w" because of the below remappings. Use "noremap"s in such
-" situations and you'll be fine.
-nnoremap ; :
-nnoremap : ;
-vnoremap ; :
-vnoremap : ;
+"配色
+colors desert 
+"设置高亮搜索
+set hlsearch
+set mouse-=a
+"设置菜单语言为英文
+set langmenu=en_US
+set encoding=utf-8
+set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1 
+set termencoding=utf-8 
+source $VIMRUNTIME/delmenu.vim
+source $VIMRUNTIME/menu.vim
+"source cscope_maps.vim
 
 
-" Toggle and untoggle spell checking
-noremap <leader>ss :setlocal spell! spelllang=en_us<cr>
+" 去掉输入错误的提示声音
+set noeb
 
-" Auto turn on spell check for markdown file, gitcommit
-autocmd vimrc FileType markdown setlocal spell! spelllang=en_us
-au vimrc FileType gitcommit setlocal spell! spelllang=en_us
+" 在处理未保存或只读文件的时候，弹出确认
+set confirm
 
-" Set IM disable and enable for Chinese Input
-autocmd InsertEnter * set noimdisable
-autocmd InsertLeave * set imdisable
+" 不要用空格代替制表符
+"set noexpandtab
 
-" Sets how many lines of history VIM has to remember
-set history=700
+" 用空格代替制表符
+set et
 
-" Enable filetype plugin
-filetype plugin on
-filetype indent on
+"显示行号
+set number
 
-" Set to auto read when a file is changed from the outside
-set autoread
+"Tab 宽度
+set ts=4
 
-" Fast saving
-nnoremap <leader>ww :w!<cr>
+"自动缩进
+set sw=4
 
-" Fast editing of the .vimrc
-noremap <leader>rc :tabe! ~/.vimrc<cr>
-noremap <silent> <leader>V :source $MYVIMRC<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
-
-" Yank to System clipboard
-map <S-c> "+y
-
-" Map esc to cancel search highlight
-nnoremap <esc> :noh<return><esc>
-
-" When vimrc is edited, reload it
-autocmd! bufwritepost vimrc source ~/.vimrc
-
-func! MySys()
-    return "linux"
-endfun
-
-" Auto go to the location last time edit when open files.
-" 自動回到最後離開時的編輯位置
-if has("autocmd")
-    autocmd BufRead *.txt set tw=78
-    autocmd BufReadPost *
-                \ if line("'\"") > 0 && line ("'\"") <= line("$") |
-                \   exe "normal g'\"" |
-                \ endif
-endif
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => VIM user interface
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Set 7 lines to the curors - when moving vertical..
-set so=7
-
-set wildmenu "Turn on WiLd menu 啟動具有提示的指令列自動完成
-
-set ruler "Always show current position
-
-set cmdheight=2 "The commandbar height
-
-set hid "Change buffer - without saving
-
-" Set backspace config
-set backspace=eol,start,indent
-set whichwrap+=<,>,h,l,[,] 
-
-set ignorecase "Ignore case when searching
-set smartcase
-
-set hlsearch "Highlight search things
-
-set incsearch "Make search act like search in modern browsers
-set nolazyredraw "Don't redraw while executing macros 
-
-set magic "Set magic on, for regular expressions
-
-set showmatch "Show matching bracets when text indicator is over them
-set mat=2 "How many tenths of a second to blink
-
-" No sound on errors
-" turns off all error bells, visual or otherwise
-set noerrorbells visualbell t_vb=
-autocmd vimrc GUIEnter * set visualbell t_vb=
-set tm=500
-
-" Add line numbers
-set nu " relative line numbers => set rnu
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Colors and Fonts
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-syntax enable "Enable syntax hl
-
-" Set font according to system
-if MySys() == "mac"
-    set gfn=Menlo:h14
-    set shell=/bin/bash
-elseif MySys() == "windows"
-    set gfn=Bitstream\ Vera\ Sans\ Mono:h10
-elseif MySys() == "linux"
-    set gfn=Monaco\ 14
-    set shell=/bin/zsh
-endif
-
-if has("gui_running")
-    set guioptions-=T "remove toolbar
-    set guioptions-=r "remove right-hand scroll bar
-    set guioptions-=L "remove left-hand scrollbar which is present when there is a vertically split window
-    set guioptions-=m "remove menu
-    set guioptions-=e "for tabline
-    "不管 normal , visual , select mode 都要用 輸入文字 的游標
-    set mouseshape+=n:beam,v:beam,s:beam,i:beam 
-    set t_Co=256
-    set background=light
-    colorscheme valloric
-    set cursorline " highlight current line
-    highlight CursorLine 	guibg=#003853 ctermbg=24  gui=none cterm=none
-else
-    colorscheme vgod
-endif
-
-set encoding=utf8
-try
-    lang zh_TW
-catch
-endtry
-
-set ffs=unix,dos,mac "Default file types
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Files, backups and undo
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Turn backup off, since most stuff is in SVN, git anyway...
+"禁止生成临时文件
 set nobackup
-set nowb
 set noswapfile
 
-" Persistent undo
-try
-    if MySys() == "windows"
-        set undodir=C:\Windows\Temp
-    else
-        set undodir=~/.vim/undodir
-    endif
+"搜索忽略大小写
+set ignorecase
 
-    set undofile
-catch
-endtry
+" 总是显示状态行
+" set laststatus=2
 
+"C/C++ 风格的自动缩进
+set cin
+"设定 C/C++ 风格自动缩进的选项
+set cino=:0g0t0(sus
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text, tab and indent related
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set expandtab
-set shiftwidth=4
-set tabstop=4
-set smarttab
-set autoindent          " on new lines, match indent of previous line
-set copyindent          " copy the previous indentation on autoindenting
+"打开普通文件类型的自动缩进
+set ai
 
-set lbr
-set tw=500
+"在编辑过程中，在右下角显示光标位置的状态行
+set ruler
 
-set ai "Auto indent
-set si "Smart indet
-set wrap "Wrap lines
+"显示匹配括号
+set showmatch
 
-set guitablabel=%t "set tab name
+"在insert模式下能用删除键进行删除
+set backspace=indent,eol,start
 
-" set indent for ruby
-autocmd FileType ruby,eruby,yaml set tabstop=2 shiftwidth=2 softtabstop=2
+"代码折叠, 命令 za
+"set foldmethod=syntax
+set foldmethod=indent
+set foldlevel=100  "启动vim时不要自动折叠代码
 
-""""""""""""""""""""""""""""""
-" => Visual mode related
-""""""""""""""""""""""""""""""
-" Really useful!
-"  In visual mode when you press * or # to search for the current selection
-vnoremap <silent> * :call VisualSearch('f')<CR>
-vnoremap <silent> # :call VisualSearch('b')<CR>
+"设置字体 
+set guifont=courier\ 10
 
-" When you press gv you vimgrep after the selected text
-vnoremap <silent> gv :call VisualSearch('gv')<CR>
-noremap <leader>g :vimgrep // **/*.<left><left><left><left><left><left><left>
+"自动换行
+set autoindent
 
+"设置编码
+set encoding=utf-8
+set fileencoding=utf-8
+set termencoding=utf-8
+set langmenu=utf-8
+set enc=utf-8
+set fenc=utf-8
+set fencs=utf-8
 
-function! CmdLine(str)
-    exe "menu Foo.Bar :" . a:str
-    emenu Foo.Bar
-    unmenu Foo
+"隐藏菜单栏
+set guioptions-=m
+set guioptions-=T
+
+""""""""""""""""""""""""""""""""""""""
+" 快捷键设置
+""""""""""""""""""""""""""""""""""""""
+
+"当前目录生成tags语法文件，用于自动完成，函数提示：code_complete.vim OmniCppComplete.vim ...
+"map <F5> :!ctags -R --c-kinds=+p --fields=+S . <CR>
+"map <F5> :!ctags -R --c-kinds=+p --c++-kinds=+p --fields=+iaS --extra=+q . <CR>
+
+"函数和变量列表
+map <F6> :TlistToggle<CR> 
+
+"文件树状列表
+map <F8> :NERDTree<CR> 
+
+"映射复制、粘贴、剪贴ctrl+c ctrl+v ctrl+x
+"map <C-V> "+pa<Esc>
+"map! <C-V> <Esc>"+pa
+"map <C-C> "+y
+"map <C-X> "+x
+
+" 映射全选 ctrl+a
+map <C-A> ggVG
+map! <C-A> <Esc>ggVG
+
+"下面6个映射用于在不退出输入模式的情况下移动光标
+"具体方法就是同时按下ctrl和光标移动键(h or j or k or l)
+"crtl-b，ctrl-w等同于normal模式下的b和w（前移一个单词和后移一个单词）
+"注意，ctrl-h在输入模式下默认等同于backspace键（这和在shell下是一样的）
+imap <C-h> <C-o>h
+imap <C-j> <C-o>j
+imap <C-k> <C-o>k
+imap <C-l> <C-o>l
+imap <C-e> <C-o>e
+imap <C-b> <C-o>b
+imap <C-w> <C-o>w
+
+" 多行缩进
+map <Tab> >
+map <S-Tab> <
+
+"全屏
+map <F11> <Esc>:call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
+
+"F1 后退 
+"F2 前进 
+"noremap <F1> <C-o>   
+"noremap <F2>  <Tab>   
+
+"F7 编译
+"map   <F7>   :call Compile()<CR>
+function! Compile()
+    copen<CR>	<C-W>10_ 
+    exec "w"
+    exec "!g++ -g % -o %<"
 endfunction
 
-" From an idea by Michael Naumann
-function! VisualSearch(direction) range
-    let l:saved_reg = @"
-    execute "normal! vgvy"
-
-    let l:pattern = escape(@", '\\/.*$^~[]')
-    let l:pattern = substitute(l:pattern, "\n$", "", "")
-
-    if a:direction == 'b'
-        execute "normal ?" . l:pattern . "^M"
-    elseif a:direction == 'gv'
-        call CmdLine("vimgrep " . '/'. l:pattern . '/' . ' **/*.')
-    elseif a:direction == 'f'
-        execute "normal /" . l:pattern . "^M"
-    endif
-
-    let @/ = l:pattern
-    let @" = l:saved_reg
+"F5 调试
+"map   <F5>   :call Debug()<CR>
+function! Debug()
+    copen<CR>	<C-W>10_ 
+    exec "w"
+    exec "!gdb %<"
 endfunction
 
+"CTRL-s    保存（保持当前模式不变） 
+"CTRL-o    打开文件对话框
+"noremap <C-s> :w<CR>   
+"noremap! <C-s> <ESC><ESC>:w<CR>a   
+"inoremap <C-o> :browse tabnew<CR>:cd %:p:h<CR>   
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Command mode related
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Smart mappings on the command line
-cno ,h tabe ~/
-cno ,d tabe ~/Desktop/
-cno ,j tabe ./
-cno ,c tabe <C-\>eCurrentFileDir("e")<cr>
+"Tab       跳至下一窗口 
+"SHIFT-Tab 跳至上一窗口
+noremap <Tab> <C-W>w:cd %:p:h<CR>:<CR>   
+noremap <S-Tab> <C-W>W:cd %:p:h<CR>:<CR> 
+noremap <CR> <ESC><ESC>za
+""""""""""""""""""""""""""""""""""""""
+" 插件设置
+""""""""""""""""""""""""""""""""""""""
+"开启OmniCppComplete.vim
+"set nocp
+"filetype plugin on
+"设置当用户预先声明namespace时也能自动补全代码（如使用using std::string）
+"let OmniCpp_DefaultNamespaces = ["std"]
+"set completeopt=longest,menu
 
-" $q is super useful when browsing on the command line
-cno ,q <C-\>eDeleteTillSlash()<cr>
+"2Html插件，启用XHtml css
+"let html_number_lines=1
+"let html_use_css=1
+"let use_xhtml=1
 
-" Bash like keys for the command line
-cnoremap <C-A>      <Home>
-cnoremap <C-E>      <End>
-cnoremap <C-K>      <C-U>
+"fencview.vim 插件设置
+"let g:fencview_autodetect = 1  "打开文件时自动识别编码
+"let g:fencview_checklines = 10 "检查前后10行来判断编码
 
-cnoremap <C-P> <Up>
-cnoremap <C-N> <Down>
+"autocomplpop.vim 插件设置
+"let g:AutoComplPop_IgnoreCaseOption=1
+set ignorecase
 
+" vimgdb setting
+"let g:vimgdb_debug_file = ""
+"run macros/gdb_mappings.vim 
 
-func! Cwd()
-    let cwd = getcwd()
-    return "e " . cwd 
-endfunc
+"""""""""""""""""""""""""""""""""""""""""""
 
-func! DeleteTillSlash()
-    let g:cmd = getcmdline()
-    if MySys() == "linux" || MySys() == "mac"
-        let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*", "\\1", "")
-    else
-        let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\]\\).*", "\\1", "")
-    endif
-    if g:cmd == g:cmd_edited
-        if MySys() == "linux" || MySys() == "mac"
-            let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*/", "\\1", "")
-        else
-            let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\\]\\).*\[\\\\\]", "\\1", "")
-        endif
-    endif
-    return g:cmd_edited
-endfunc
+""python编程相关
+if has("autocmd")
+    filetype plugin indent on
 
-func! CurrentFileDir(cmd)
-    return a:cmd . " " . expand("%:p:h") . "/"
-endfunc
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Moving around, tabs and buffers
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Treat long lines as break lines (useful when moving around in them):
-map j gj
-map k gk
-" Map space to / (search) and c-space to ? (backgwards search)
-map <space> /\v
-map <c-space> ?
-noremap <silent> <leader><cr> :noh<cr>
-
-" Smart way to move btw. windows
-" map <C-j> <C-W>j
-" map <C-k> <C-W>k
-" map <C-h> <C-W>h
-" map <C-l> <C-W>l
-map `j <C-W>j
-map `h <C-W>h
-map `k <C-W>k
-map `l <C-W>l
-
-" Close the current buffer
-noremap <leader>bd :Bclose<cr>
-
-" Close all the buffers
-noremap <leader>ba :1,300 bd!<cr>
-
-" Use the arrows to something usefull
-noremap <right> :bn<cr>
-noremap <left> :bp<cr>
-
-" Tab configuration
-noremap <leader>tn :tabnew<cr>
-noremap <leader>te :tabedit 
-noremap <leader>tc :tabclose<cr>
-noremap <leader>tm :tabmove 
-
-" When pressing <leader>cd switch to the directory of the open buffer
-noremap <leader>cd :cd %:p:h<cr>
-
-" 切換 tab
-nnoremap <S-H> :tabp<ENTER>
-nnoremap <S-L> :tabn<ENTER>
-
-command! Bclose call <SID>BufcloseCloseIt()
-function! <SID>BufcloseCloseIt()
-    let l:currentBufNum = bufnr("%")
-    let l:alternateBufNum = bufnr("#")
-
-    if buflisted(l:alternateBufNum)
-        buffer #
-    else
-        bnext
-    endif
-
-    if bufnr("%") == l:currentBufNum
-        new
-    endif
-
-    if buflisted(l:currentBufNum)
-        execute("bdelete! ".l:currentBufNum)
-    endif
-endfunction
-
-" Specify the behavior when switching between buffers 
-try
-    set switchbuf=usetab
-    set stal=2
-catch
-endtry
-
-
-""""""""""""""""""""""""""""""
-" => Statusline
-""""""""""""""""""""""""""""""
-" Always hide the statusline
-set laststatus=2
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Parenthesis/bracket expanding
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-vnoremap ,1 <esc>`>a)<esc>`<i(<esc>
-vnoremap ,2 <esc>`>a]<esc>`<i[<esc>
-vnoremap ,3 <esc>`>a}<esc>`<i{<esc>
-vnoremap ,4 <esc>`>a"<esc>`<i"<esc>
-vnoremap ,q <esc>`>a'<esc>`<i'<esc>
-
-" Map auto complete of (, ", ', [
-inoremap ,1 ()<esc>i
-inoremap ,2 []<esc>i
-inoremap ,3 {}<esc>i
-inoremap ,4 {<esc>o}<esc>O
-inoremap ,q ''<esc>i
-inoremap ,e ""<esc>i
-inoremap ,t <><esc>i
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => General Abbrevs
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Editing mappings
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Remap VIM gf
-map gf <C-w>gf
-
-"Remap VIM 0
-map 0 ^
-
-"Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
-nnoremap <M-j> mz:m+<cr>`z
-nnoremap <M-k> mz:m-2<cr>`z
-vnoremap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
-vnoremap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
-
-if MySys() == "mac"
-    nmap <D-j> <M-j>
-    nmap <D-k> <M-k>
-    vmap <D-j> <M-j>
-    vmap <D-k> <M-k>
+    " Python 文件的一般设置，比如不要 tab 等
+    autocmd FileType python set foldmethod=indent
+    autocmd FileType python set cinwords=if,elif,else,for,while,try,except,finally,def,class
 endif
 
-"Delete trailing white space, useful for Python ;)
-func! DeleteTrailingWS()
-    exe "normal mz"
-    %s/\s\+$//ge
-    exe "normal `z"
-endfunc
-autocmd BufWrite *.py :call DeleteTrailingWS()
+" doxgen 
+let g:doxygenToolkit_authorName="charis.yangc@alibaba-inc.com"
+let g:doxygenToolkit_briefTag_funcName="yes"
 
-" Hot key to switch between Big5 and UTF-8
-noremap <M-u> :set fileencoding=utf-8<CR>
-noremap <M-b> :set fileencoding=big5<CR>
-
-" 縮排
-nmap <tab> v>
-nmap <s-tab> v<
-vmap <tab> >gv
-vmap <s-tab> <gv
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Vim-indent-guides plugin
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_color_change_percent = 7
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => bufExplorer plugin
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:bufExplorerDefaultHelp=0
-let g:bufExplorerShowRelativePath=1
-noremap <leader>o :BufExplorer<cr>
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => NERD_tree plugin
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" This makes the dir of the current file the root of the nerdtree;
-" in effect, it re-centers the nerdtree on the current file's folder.
-noremap <F2> :NERDTreeToggle<CR>
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Tagbar plugin
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <silent> <F9> :TagbarToggle<CR>
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => YankRing plugin
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:yankring_history_dir = '$HOME/tmp/vim'
-"let g:yankring_clipboard_monitor = 1
-nnoremap <silent> <F11> :YRShow<CR>
-nnoremap <silent> <C-F11> :YRSearch 
-
-" this makes Y yank from the cursor to the end of the line, which makes more
-" sense than the default of yanking the whole current line (we can use yy for that)
-function! YRRunAfterMaps()
-    nnoremap Y   :<C-U>YRYankCount 'y$'<CR>
+"for snippetEmu
+let g:snip_set_textmate_cp=1
+"set cursorline
+" EnhanceCommentify
+map <F2> <Esc><Esc>:call EnhancedCommentify('yes','comment')<CR>
+map <F3> <Esc><Esc>:call EnhancedCommentify('yes','decomment')<CR>
+set clipboard=unnamed
+"cscope
+if(has("win32") || has("win95") || has("win64") || has("win16"))
+    let g:vimrc_iswindows=1
+else
+    let g:vimrc_iswindows=0
+endif
+autocmd BufEnter * lcd %:p:h
+map <F12> :call Do_CsTag()<CR>
+nmap <C-@>s :cs find s <C-R>=expand("<cword>")<CR><CR>:copen<CR>
+nmap <C-@>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <C-@>c :cs find c <C-R>=expand("<cword>")<CR><CR>:copen<CR>
+nmap <C-@>t :cs find t <C-R>=expand("<cword>")<CR><CR>:copen<CR>
+nmap <C-@>e :cs find e <C-R>=expand("<cword>")<CR><CR>:copen<CR>
+nmap <C-@>f :cs find f <C-R>=expand("<cfile>")<CR><CR>:copen<CR>
+nmap <C-@>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>:copen<CR>
+nmap <C-@>d :cs find d <C-R>=expand("<cword>")<CR><CR>:copen<CR>
+function Do_CsTag()
+    let dir = getcwd()
+    if filereadable("tags")
+        let tagsdeleted=delete("./"."tags")
+        if(tagsdeleted!=0)
+            echohl WarningMsg | echo "Fail to do tags! I cannot delete the tags" | echohl None
+            return
+        endif
+    endif
+    if has("cscope")
+        silent! execute "cs kill -1"
+    endif
+    if filereadable("cscope.files")
+        let csfilesdeleted=delete("./"."cscope.files")
+        if(csfilesdeleted!=0)
+            echohl WarningMsg | echo "Fail to do cscope! I cannot delete the cscope.files" | echohl None
+            return
+        endif
+    endif
+    if filereadable("cscope.out")
+        let csoutdeleted=delete("./"."cscope.out")
+        if(csoutdeleted!=0)
+            echohl WarningMsg | echo "Fail to do cscope! I cannot delete the cscope.out" | echohl None
+            return
+        endif
+    endif
+    if(executable('ctags'))
+        silent! execute "!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ."
+    endif
+    if(executable('cscope') && has("cscope") )
+        silent! execute "!find . -name '*.h' -o -name '*.c' -o -name '*.cpp' -o -name '*.java' -o -name '*.cs' > cscope.files"
+        silent! execute "!cscope -bq"
+        execute "normal :"
+        if filereadable("cscope.out")
+            execute "cs add cscope.out"
+        endif
+    endif
 endfunction
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Vim-notes
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-let g:notes_directory = '~/notes'
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Syntastic
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-let g:syntastic_error_symbol = '✗'
-"let g:syntastic_warning_symbol = '⚠'
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => tabular plugin
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" looks at the current line and the lines above and below it and aligns all the
-" equals signs; useful for when we have several lines of declarations
-nnoremap <Leader>a= :Tabularize /=<CR>
-vnoremap <Leader>a= :Tabularize /=<CR>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => neocomplcache plugin
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" let g:neocomplcache_enable_at_startup = 1
-" let g:neocomplcache_disable_auto_complete = 1
-" let g:SuperTabDefaultCompletionType = "<C-X><C-U>"
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => SigleCompile plugin
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <F3> :SCCompile<cr>
-nnoremap <F4> :SCCompileRun<cr>
-call SingleCompile#ChooseCompiler('python', 'python2')
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Gundo plugin
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <F5> :GundoToggle<CR>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => UltiSnips plugin
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" can't use <tab> as our snippet key since I use that with YCM
-let g:UltiSnipsExpandTrigger       = "<m-s>"
-let g:UltiSnipsListSnippets        = "<c-m-s>"
-let g:UltiSnipsJumpForwardTrigger  = "<m-s>"
-let g:UltiSnipsJumpBackwardTrigger = "<m-t>"
-let g:snips_author                 = 'LazyWei'
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Tabline Set
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set tabline=%!SetTabLine()
-
-function! SetTabLine()
-    " NOTE: left/right padding of each tab was hard coded as 1 space.
-    " NOTE: require Vim 7.3 strwidth() to display fullwidth text correctly.
-
-    " settings
-    let tabMinWidth = 0
-    let tabMaxWidth = 40
-    let tabMinWidthResized = 15
-    let tabScrollOff = 5
-    let tabEllipsis = '…'
-    let tabDivideEquel = 0
-
-    let s:tabLineTabs = []
-
-    let tabCount = tabpagenr('$')
-    let tabSel = tabpagenr()
-
-    " fill s:tabLineTabs with {n, filename, split, flag} for each tab
-    for i in range(tabCount)
-        let tabnr = i + 1
-        let buflist = tabpagebuflist(tabnr)
-        let winnr = tabpagewinnr(tabnr)
-        let bufnr = buflist[winnr - 1]
-
-        let filename = bufname(bufnr)
-        let filename = fnamemodify(filename, ':p:t')
-        let buftype = getbufvar(bufnr, '&buftype')
-        if filename == ''
-            if buftype == 'nofile'
-                let filename .= '[Scratch]'
-            else
-                let filename .= '[New]'
-            endif
-        endif
-        let split = ''
-        let winCount = tabpagewinnr(tabnr, '$')
-        if winCount > 1   " has split windows
-            let split .= winCount
-        endif
-        let flag = ''
-        if getbufvar(bufnr, '&modified')  " modified
-            let flag .= '+'
-        endif
-        if strlen(flag) > 0 || strlen(split) > 0
-            let flag .= ' '
-        endif
-
-        call add(s:tabLineTabs, {'n': tabnr, 'split': split, 'flag': flag, 'filename': filename})
-    endfor
-
-    " variables for final oupout
-    let s = ''
-    let l:tabLineTabs = deepcopy(s:tabLineTabs)
-
-    " overflow adjustment
-    " 1. apply min/max tabWidth option
-    if s:TabLineTotalLength(l:tabLineTabs) > &columns
-        unlet i
-        for i in l:tabLineTabs
-            let tabLength = s:CalcTabLength(i)
-            if tabLength < tabMinWidth
-                let i.filename .= repeat(' ', tabMinWidth - tabLength)
-            elseif tabMaxWidth > 0 && tabLength > tabMaxWidth
-                let reserve = tabLength - StrWidth(i.filename) + StrWidth(tabEllipsis)
-                if tabMaxWidth > reserve
-                    let i.filename = StrCrop(i.filename, (tabMaxWidth - reserve), '~') . tabEllipsis
-                endif
-            endif
-        endfor
-    endif
-    " 2. try divide each tab equal-width
-    if tabDivideEquel
-        if s:TabLineTotalLength(l:tabLineTabs) > &columns
-            let divideWidth = max([tabMinWidth, tabMinWidthResized, &columns / tabCount, StrWidth(tabEllipsis)])
-            unlet i
-            for i in l:tabLineTabs
-                let tabLength = s:CalcTabLength(i)
-                if tabLength > divideWidth
-                    let i.filename = StrCrop(i.filename, divideWidth - StrWidth(tabEllipsis), '~') . tabEllipsis
-                endif
-            endfor
-        endif
-    endif
-    " 3. ensure visibility of current tab 
-    let rhWidth = 0
-    let t = tabCount - 1
-    let rhTabStart = min([tabSel - 1, tabSel - tabScrollOff])
-    while t >= max([rhTabStart, 0])
-        let tab = l:tabLineTabs[t]
-        let tabLength = s:CalcTabLength(tab)
-        let rhWidth += tabLength
-        let t -= 1
-    endwhile
-    while rhWidth >= &columns
-        let tab = l:tabLineTabs[-1]
-        let tabLength = s:CalcTabLength(tab)
-        let lastTabSpace = &columns - (rhWidth - tabLength)
-        let rhWidth -= tabLength
-        if rhWidth > &columns
-            call remove(l:tabLineTabs, -1)
-        else
-            " add special flag (will be removed later) indicating that how many
-            " columns could be used for last displayed tab.
-            if tabSel <= tabScrollOff || tabSel < tabCount - tabScrollOff
-                let tab.flag .= '>' . lastTabSpace
-            endif
-        endif
-    endwhile
-
-    " final ouput
-    unlet i
-    for i in l:tabLineTabs
-        let tabnr = i.n
-
-        let split = ''
-        if strlen(i.split) > 0
-            if tabnr == tabSel
-                let split = '%#TabLineSplitNrSel#' . i.split .'%#TabLineSel#'
-            else
-                let split = '%#TabLineSplitNr#' . i.split .'%#TabLine#'
-            endif
-        endif
-
-        let text = ' ' . split . i.flag . i.filename . ' '
-
-        if i.n == l:tabLineTabs[-1].n
-            if match(i.flag, '>\d\+') > -1 || i.n < tabCount
-                let lastTabSpace = matchstr(i.flag, '>\zs\d\+')
-                let i.flag = substitute(i.flag, '>\d\+', '', '')
-                if lastTabSpace <= strlen(i.n)
-                    if lastTabSpace == 0
-                        let s = strpart(s, 0, strlen(s) - 1)
-                    endif
-                    let s .= '%#TabLineMore#>'
-                    continue
-                else
-                    let text = ' ' . i.split . i.flag . i.filename . ' '
-                    let text = StrCrop(text, (lastTabSpace - strlen(i.n) - 1), '~') . '%#TabLineMore#>'
-                    let text = substitute(text, ' ' . i.split, ' ' . split, '')
-                endif
-            endif
-        endif
-
-        let s .= '%' . tabnr . 'T'  " start of tab N
-
-        if tabnr == tabSel
-            let s .= '%#TabLineNrSel#' . tabnr . '%#TabLineSel#'
-        else
-            let s .= '%#TabLineNr#' . tabnr . '%#TabLine#'
-        endif
-
-        let s .= text
-
-    endfor
-
-    let s .= '%#TabLineFill#%T'
-    return s
-endf
-
-function! s:CalcTabLength(tab)
-    return strlen(a:tab.n) + 2 + strlen(a:tab.split) + strlen(a:tab.flag) + StrWidth(a:tab.filename)
-endf
-
-function! s:TabLineTotalLength(dict)
-    let length = 0
-    for i in (a:dict)
-        let length += strlen(i.n) + 2 + strlen(i.split) + strlen(i.flag) + StrWidth(i.filename)
-    endfor
-    return length
-endf
-
-" }}}2   字串長度（column 數）   {{{2
-
-function! StrWidth(str)
-    if exists('*strwidth')
-        return strwidth(a:str)
-    else
-        let strlen = strlen(a:str)
-        let mstrlen = strlen(substitute(a:str, ".", "x", "g"))
-        if strlen == mstrlen
-            return strlen
-        else
-            " Note: 暫不處理全形字（以下值不正確）
-            return strlen
-        endif
-    endif
-endf
-
-" }}}2   依字串長度（column 數）裁切多餘文字   {{{2
-
-function! StrCrop(str, len, ...)
-    let l:padChar = a:0 > 0 ? a:1 : ' '
-    if exists('*strwidth')
-        let text = substitute(a:str, '\%>' . a:len . 'c.*', '', '')
-        let remainChars = split(substitute(a:str, text, '', ''), '\zs')
-        while strwidth(text) < a:len
-            let longer = len(remainChars) > 0 ? (text . remove(remainChars, 0)) : text
-            if strwidth(longer) < a:len
-                let text = longer
-            else
-                let text .= l:padChar
-            endif
-        endwhile
-        return text
-    else
-        " Note: 暫不處理全形字（以下值不正確）
-        return substitute(a:str, '\%>' . a:len . 'c.*', '', '')
-    endif
-endf
-
-hi TabLine           cterm=underline ctermfg=15    ctermbg=242   gui=underline guibg=#6c6c6c guifg=White
-hi TabLineSel        cterm=bold      gui=NONE      guifg=White
-hi TabLineNr         cterm=underline ctermbg=238   guibg=#444444
-hi TabLineNrSel      cterm=bold      ctermfg=45    guifg=#00d7ff
-hi TabLineFill       cterm=reverse   gui=reverse
-hi TabLineMore       cterm=underline ctermfg=White ctermbg=236   gui=underline guifg=White   guibg=#303030
-hi TabLineSplitNr    cterm=underline ctermfg=148 ctermbg=240   gui=underline,italic guifg=#afd700   guibg=#6c6c6c
-hi TabLineSplitNrSel cterm=NONE      ctermfg=148 ctermbg=236   gui=NONE,italic      guifg=#afd700   guibg=#303030
+set nocscopeverbose
