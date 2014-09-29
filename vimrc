@@ -245,7 +245,7 @@ if has("autocmd")
 endif
 
 " doxgen 
-let g:doxygenToolkit_authorName="charis.yangc@alibaba-inc.com"
+let g:doxygenToolkit_authorName="myemal"
 let g:doxygenToolkit_briefTag_funcName="yes"
 
 "for snippetEmu
